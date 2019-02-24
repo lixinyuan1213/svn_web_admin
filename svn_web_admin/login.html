@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>svn web管理系统</title>
+  <meta name="description" content="这是一个 index 页面">
+  <meta name="keywords" content="index">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="icon" type="image/png" href="assets/i/favicon.png">
+  <link rel="apple-touch-icon-precomposed" href="assets/i/app-icon72x72@2x.png">
+  <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+  <link rel="stylesheet" href="assets/css/amazeui.min.css" />
+  <link rel="stylesheet" href="assets/css/admin.css">
+  <link rel="stylesheet" href="assets/css/app.css">
+</head>
+
+<body data-type="login">
+
+  <div class="am-g myapp-login">
+	<div class="myapp-login-logo-block  tpl-login-max">
+		<div class="myapp-login-logo-text">
+			<div class="myapp-login-logo-text">
+				svn web管理系统<i class="am-icon-skyatlas"></i>
+				
+			</div>
+		</div>
+
+		<div class="login-font">
+			<i>svn web管理系统 </i>
+		</div>
+		<div class="am-u-sm-10 login-am-center">
+			<form class="am-form">
+				<fieldset>
+					<div class="am-form-group">
+						<input type="email" class="" id="doc-ipt-email-1" placeholder="输入电子邮件">
+					</div>
+					<div class="am-form-group">
+						<input type="password" class="" id="doc-ipt-pwd-1" placeholder="输入密码">
+					</div>
+					<p><button type="button" class="am-btn am-btn-default" onclick="sub()">登录</button></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/amazeui.min.js"></script>
+	<script src="assets/js/app.js"></script>
+	<script src="assets/js/host.js"></script>
+	<script src="assets/js/layer/layer.js"></script>
+	<script>
+		function sub(){
+			var email = $("#doc-ipt-email-1").val();
+			var pwd = $("#doc-ipt-pwd-1").val();
+			if(email==""||pwd==""){
+				layer.msg("请确认用户名和密码填写正确");
+				return false;
+			}
+			$.post(ApiHost+"/login",{userName:email,passWord:pwd},function(data){
+				if(data.code==200){
+					layer.msg('登录成功');
+					sessionStorage.setItem("userToken",data.data);
+					url = Host+"/index.html";
+					location.href=url;
+				}else{
+					layer.msg('登录失败,请重试');
+				}
+			});
+		}
+	</script>
+</body>
+</html>
