@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"strings"
 	"time"
 	"util"
 )
@@ -55,6 +56,8 @@ func Edit(w http.ResponseWriter, r *http.Request)  {
 			return
 		}
 		pname := r.PostFormValue("pname")
+		pname = strings.Replace(pname, " ", "", -1)
+		pname = strings.Replace(pname, "\n", "", -1)
 		if pname == ""{
 			req := util.Resp("","参数错误",400)
 			rsq,_ := json.Marshal(req)
@@ -62,6 +65,8 @@ func Edit(w http.ResponseWriter, r *http.Request)  {
 			return
 		}
 		cname := r.PostFormValue("cname")
+		cname = strings.Replace(cname, " ", "", -1)
+		cname = strings.Replace(cname, "\n", "", -1)
 		remark := r.PostFormValue("remark")
 		//获取leveldb的实例
 		dbModel := util.GetDb("./db")

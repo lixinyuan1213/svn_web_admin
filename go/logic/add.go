@@ -6,6 +6,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os/exec"
+	"strings"
 	"time"
 	"util"
 )
@@ -15,6 +16,8 @@ func Add(w http.ResponseWriter, r *http.Request)  {
 	w.Header().Set("Content-Type", "application/json")
 	config := config.GetConfig()
 	pname := r.PostFormValue("pname")
+	pname = strings.Replace(pname, " ", "", -1)
+	pname = strings.Replace(pname, "\n", "", -1)
 	if pname == ""{
 		req := util.Resp("","项目名称不能为空",400)
 		rsq,_ := json.Marshal(req)
@@ -22,6 +25,8 @@ func Add(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	cname := r.PostFormValue("cname")
+	cname = strings.Replace(cname, " ", "", -1)
+	cname = strings.Replace(cname, "\n", "", -1)
 	if cname == ""{
 		req := util.Resp("","项目名称（中文）不能为空",400)
 		rsq,_ := json.Marshal(req)
@@ -29,6 +34,8 @@ func Add(w http.ResponseWriter, r *http.Request)  {
 		return
 	}
 	userToken := r.PostFormValue("userToken")
+	userToken = strings.Replace(userToken, " ", "", -1)
+	userToken = strings.Replace(userToken, "\n", "", -1)
 	if util.IsLogn(userToken)==false {
 		req := util.Resp("","请确认已经登录",430)
 		rsq,_ := json.Marshal(req)
