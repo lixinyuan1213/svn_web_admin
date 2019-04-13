@@ -1,0 +1,19 @@
+04-13 12:44:42.780 [ INFO] [               c.s.s.SvnadminApplication: 50] - Starting SvnadminApplication on DESKTOP-8KMC8JN with PID 668 (C:\Users\lisy\Desktop\svnadmin\target\classes started by lisy in C:\Users\lisy\Desktop\svnadmin)
+04-13 12:44:42.796 [ INFO] [               c.s.s.SvnadminApplication:675] - No active profile set, falling back to default profiles: default
+04-13 12:44:42.889 [ INFO] [.e.DevToolsPropertyDefaultsPostProcessor:227] - Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+04-13 12:44:42.889 [ INFO] [.e.DevToolsPropertyDefaultsPostProcessor:227] - For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+04-13 12:44:46.139 [ INFO] [             o.s.b.w.e.t.TomcatWebServer: 90] - Tomcat initialized with port(s): 8282 (http)
+04-13 12:44:46.169 [ INFO] [               o.a.c.h.Http11NioProtocol:173] - Initializing ProtocolHandler ["http-nio-8282"]
+04-13 12:44:46.185 [ INFO] [                 o.a.c.c.StandardService:173] - Starting service [Tomcat]
+04-13 12:44:46.185 [ INFO] [                  o.a.c.c.StandardEngine:173] - Starting Servlet engine: [Apache Tomcat/9.0.16]
+04-13 12:44:46.216 [ INFO] [            o.a.c.c.AprLifecycleListener:173] - The APR based Apache Tomcat Native library which allows optimal performance in production environments was not found on the java.library.path: [E:\workspace\programs\java\jdk\bin;C:\Windows\Sun\Java\bin;C:\Windows\system32;C:\Windows;E:/workspace/programs/java/jdk/bin/../jre/bin/server;E:/workspace/programs/java/jdk/bin/../jre/bin;E:/workspace/programs/java/jdk/bin/../jre/lib/amd64;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;E:\workspace\programs\java\jdk\bin;C:\Program Files\Git\cmd;C:\Program Files\TortoiseSVN\bin;E:\workspace\programs\python;E:\workspace\programs\redis\;E:\workspace\programs\Microsoft VS Code\bin;C:\ProgramData\ComposerSetup\bin;E:\workspace\programs\Visual-NMP-x64\Bin\PHP\php-7.0.28-nts-Win32-VC14-x64;E:\workspace\programs\go\bin;C:\Program Files\mingw-w64\x86_64-8.1.0-posix-seh-rt_v6-rev0\mingw64\bin;E:\workspace\programs\Maven\apache-maven-3.6.0\bin;C:\Users\lisy\AppData\Local\Microsoft\WindowsApps;;E:\workspace\programs\Microsoft VS Code\bin;C:\Users\lisy\AppData\Roaming\Composer\vendor\bin;C:\Users\lisy\go\bin;E:\workspace\programs\eclipse;;.]
+04-13 12:44:46.419 [ INFO] [                       o.a.c.c.C.[.[.[/]:173] - Initializing Spring embedded WebApplicationContext
+04-13 12:44:46.419 [ INFO] [                   o.s.w.c.ContextLoader:296] - Root WebApplicationContext: initialization completed in 3530 ms
+04-13 12:44:47.341 [ INFO] [          o.s.s.c.ThreadPoolTaskExecutor:171] - Initializing ExecutorService 'applicationTaskExecutor'
+04-13 12:44:47.638 [ WARN] [                      o.t.t.TemplateMode:150] - [THYMELEAF][restartedMain] Template Mode 'HTML5' is deprecated. Using Template Mode 'HTML' instead.
+04-13 12:44:47.747 [ INFO] [   o.s.b.a.w.s.WelcomePageHandlerMapping: 61] - Adding welcome page template: index
+04-13 12:44:47.904 [ INFO] [         o.s.s.c.ThreadPoolTaskScheduler:171] - Initializing ExecutorService 'taskScheduler'
+04-13 12:44:48.091 [ INFO] [      o.s.b.d.a.OptionalLiveReloadServer: 57] - LiveReload server is running on port 35729
+04-13 12:44:48.169 [ INFO] [               o.a.c.h.Http11NioProtocol:173] - Starting ProtocolHandler ["http-nio-8282"]
+04-13 12:44:48.216 [ INFO] [             o.s.b.w.e.t.TomcatWebServer:204] - Tomcat started on port(s): 8282 (http) with context path ''
+04-13 12:44:48.232 [ INFO] [               c.s.s.SvnadminApplication: 59] - Started SvnadminApplication in 5.985 seconds (JVM running for 7.235)

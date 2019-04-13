@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sljm.svnadmin.mapper.SvnProjectMapper">
+  <resultMap id="BaseResultMap" type="com.sljm.svnadmin.model.SvnProject">
+    <result column="id" jdbcType="INTEGER" property="id" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="file_name" jdbcType="VARCHAR" property="file_name" />
+    <result column="creator" jdbcType="INTEGER" property="creator" />
+    <result column="intro" jdbcType="VARCHAR" property="intro" />
+    <result column="ctime" jdbcType="VARCHAR" property="ctime" />
+    <result column="mtime" jdbcType="VARCHAR" property="mtime" />
+    <result column="users" jdbcType="VARCHAR" property="users" />
+    <result column="auth" jdbcType="VARCHAR" property="auth" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id,name,file_name,creator,intro,ctime,mtime,users,auth
+  </sql>
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.sljm.svnadmin.model.SvnProject">
+    insert into svn_project
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="name != null and name!=''">
+        name,
+      </if>
+      <if test="file_name != null and file_name!=''">
+        file_name,
+      </if>
+      <if test="creator != null and creator!=0">
+        creator,
+      </if>
+      <if test="intro != null and intro!=''">
+        intro,
+      </if>
+      <if test="ctime != null">
+        ctime,
+      </if>
+      <if test="mtime != null">
+        mtime,
+      </if>
+      <if test="users != null and users!=''">
+        users,
+      </if>
+      <if test="auth != null and auth!=''">
+        auth,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="name != null and name!=''">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="file_name != null and file_name!=''">
+        #{file_name,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null and creator!=0">
+        #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="intro != null and intro!=''">
+        #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null">
+        #{ctime,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null">
+        #{mtime,jdbcType=VARCHAR},
+      </if>
+      <if test="users != null and users!=''">
+        #{users,jdbcType=VARCHAR},
+      </if>
+      <if test="auth != null and auth!=''">
+        #{auth,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <sql id="wherecondition" >
+  	 <if test="id != null">
+       and id = #{id,jdbcType=INTEGER}
+      </if>
+      <if test="name != null">
+       and name = #{name,jdbcType=VARCHAR}
+      </if>
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from svn_project
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from svn_project
+    where file_name = #{file_name,jdbcType=VARCHAR} limit 1
+  </select>
+  <select id="selectByNameNotId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from svn_project
+    where file_name = #{file_name,jdbcType=VARCHAR} and id != #{id,jdbcType=INTEGER} limit 1
+  </select>
+  <select id="getSvnList" resultMap="BaseResultMap" resultType="com.sljm.svnadmin.model.SvnProject">
+    select 
+    <include refid="Base_Column_List" />
+    from svn_project
+    <where>
+        <if test="name != null and name !=''">  
+            or name like '%'||#{name}||'%'  
+        </if> 
+        <if test="file_name != null and file_name !=''">  
+            or file_name like '%'||#{file_name}||'%'  
+        </if>
+        <if test="intro != null and intro !=''">  
+            or intro like '%'||#{intro}||'%'  
+        </if>
+        <if test="users != null and users !=''">  
+            or users like '%'||#{users}||'%'  
+        </if>
+        <if test="auth != null and auth !=''">  
+            or auth like '%'||#{auth}||'%'  
+        </if>
+        <if test="creator != null and creator !=''">  
+            or creator = creator  
+        </if>  
+    </where>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from svn_project
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <update id="updateByPrimaryKeySelective" parameterType="com.sljm.svnadmin.model.SvnProject">
+    update svn_project
+    <set>
+      <if test="name != null and name!=''">
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="file_name != null and file_name!=''">
+        file_name = #{file_name,jdbcType=VARCHAR},
+      </if>
+      <if test="creator != null and creator!=0">
+        creator = #{creator,jdbcType=INTEGER},
+      </if>
+      <if test="intro != null and intro != ''">
+        intro = #{intro,jdbcType=VARCHAR},
+      </if>
+      <if test="ctime != null">
+        ctime = #{ctime,jdbcType=VARCHAR},
+      </if>
+      <if test="mtime != null">
+        mtime = #{mtime,jdbcType=VARCHAR},
+      </if>
+      <if test="auth != null and auth != ''">
+        auth = #{auth,jdbcType=VARCHAR},
+      </if>
+      <if test="users != null and users != ''">
+        users = #{users,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

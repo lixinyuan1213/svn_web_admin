@@ -1,0 +1,210 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>用户信息</title>
+    <meta name="description" content="用户信息">
+    <meta name="keywords" content="userinfo">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="/css/amazeui.min.css" />
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+
+<body data-type="generalComponents">
+
+
+    <header class="am-topbar am-topbar-inverse admin-header">
+        <div class="am-topbar-brand">
+            <a href="/" class="tpl-logo">
+                <img src="/img/logo.png" alt="">
+            </a>
+        </div>
+        <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
+
+        </div>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+            <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+                <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                    <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+                        <span class="tpl-header-list-user-nick">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <!-- <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
+                        <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li> -->
+                        <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    </ul>
+                </li>
+                <li><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="tpl-page-container tpl-page-header-fixed">
+        <div class="tpl-left-nav tpl-left-nav-hover">
+            <div class="tpl-left-nav-title">
+                所有菜单
+            </div>
+            <div class="tpl-left-nav-list">
+                <ul class="tpl-left-nav-menu">
+                    <li class="tpl-left-nav-item">
+                        <a href="/" class="nav-link">
+                            <i class="am-icon-home"></i>
+                            <span>首页</span>
+                        </a>
+                        <a href="/user/list" class="nav-link active">
+                            <i class="am-icon-key"></i>
+                            <span>用户管理</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+
+
+        <div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+                用户信息
+            </div>
+            <ol class="am-breadcrumb">
+                <li><a href="#" class="am-icon-home">首页</a></li>
+                <li><a href="#">用户列表</a></li>
+                <li class="am-active">用户列表</li>
+            </ol>
+            <div class="tpl-portlet-components">
+                <div class="tpl-block">
+
+                    <div class="am-g">
+                        <div class="tpl-form-body tpl-form-line">
+                            <form class="am-form tpl-form-line-form">
+                                <div class="am-form-group">
+                                    <label for="user-name" class="am-u-sm-3 am-form-label">登录名称 <span class="tpl-form-line-small-title">name</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="tpl-form-input" id="user_name_str" placeholder="请输入登录名称">
+                                        <small>不能出现特殊字符</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-name" class="am-u-sm-3 am-form-label">登录密码<span class="tpl-form-line-small-title">passwd</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="password" class="tpl-form-input" id="user-passwd" placeholder="填写密码即代表修改密码">
+                                        <small>不能为空</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-name" class="am-u-sm-3 am-form-label">真实姓名<span class="tpl-form-line-small-title">real_name</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="tpl-form-input" id="user-real_name" placeholder="请填写真实姓名">
+                                        <small>不能出现特殊字符</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-name" class="am-u-sm-3 am-form-label">所属部门<span class="tpl-form-line-small-title">department</span></label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" class="tpl-form-input" id="departmentId" placeholder="请填写部门">
+                                        <small>不能出现特殊字符</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-phone" class="am-u-sm-3 am-form-label">角色 <span class="tpl-form-line-small-title">role</span></label>
+                                    <div class="am-u-sm-9">
+                                        <select data-am-selected="{searchBox: 1}" id="roleStr">
+										  <option value="1">管理员</option>
+										  <option value="2">普通用户</option>
+										</select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-phone" class="am-u-sm-3 am-form-label">状态 <span class="tpl-form-line-small-title">status</span></label>
+                                    <div class="am-u-sm-9">
+                                        <select data-am-selected="{searchBox: 1}" id="statusStr">
+										  <option value="1">有效</option>
+										  <option value="0">无效</option>
+										</select>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-intro" class="am-u-sm-3 am-form-label">文章内容</label>
+                                    <div class="am-u-sm-9">
+                                        <textarea class="" rows="10" id="user-intro" placeholder="说明备注"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                        <button type="button" class="am-btn am-btn-primary tpl-btn-bg-color-success" th:onclick="subForm()">提交</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/amazeui.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/layer/layer.js"></script>
+    <script>
+         function subForm(){
+        	 var user_intro = $("#user-intro").val();
+        	 var departmentId = $("#departmentId").val();
+        	 var user_real_name = $("#user-real_name").val();
+        	 var user_passwd = $("#user-passwd").val();
+        	 var user_name = $("#user_name_str").val();
+        	 var statusStr = $("#statusStr").val();
+        	 var roleStr = $("#roleStr").val();
+        	 if(departmentId==""){
+        		 layer.msg("请填写部门");
+        		 return false;
+        	 }
+        	 if(statusStr==""){
+        		 layer.msg("请选择状态");
+        		 return false;
+        	 }
+        	 if(roleStr==""){
+        		 layer.msg("请选择角色");
+        		 return false;
+        	 }
+        	 if(user_real_name==""){
+        		 layer.msg("请填写用户真实姓名");
+        		 return false;
+        	 }
+        	 if(user_name==""){
+        		 layer.msg("登录名称不能为空");
+        		 return false;
+        	 }
+        	 $.ajax({    
+        		type:'post',        
+        		url:'/user/doAdd',    
+        		data:{remark:user_intro,status:statusStr,role:roleStr,department:departmentId,real_name:user_real_name,password:user_passwd,name:user_name},    
+        		cache:false,       
+        		success:function(data){
+        			layer.msg(data.msg);
+        			if(data.code==200){
+        				setTimeout(function(){
+        					location.reload();
+        				},1200);
+        			} 
+        		},
+        		error:function(){
+        		   layer.msg("系统异常，请重试");
+           		   return false;
+        		} 
+        	 }); 
+         }
+    </script>
+</body>
+
+</html>

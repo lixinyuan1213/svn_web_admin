@@ -1,0 +1,214 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>编辑svn</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="image/png" href="/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="css/amazeui.min.css" />
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/app.css">
+</head>
+
+<body data-type="generalComponents">
+
+
+    <header class="am-topbar am-topbar-inverse admin-header">
+        <div class="am-topbar-brand">
+            <a href="/" class="tpl-logo">
+                <img src="img/logo.png" alt="">
+            </a>
+        </div>
+        <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
+
+        </div>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+            <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+                <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                    <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+                        <span class="tpl-header-list-user-nick">管理员</span><span class="tpl-header-list-user-ico"> <img src="img/user01.png"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <!-- <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
+                        <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li> -->
+                        <li onclick="log_out()"><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    </ul>
+                </li>
+                <li onclick="log_out()"><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="tpl-page-container tpl-page-header-fixed">
+        <div class="tpl-left-nav tpl-left-nav-hover">
+            <div class="tpl-left-nav-title">
+                项目详情
+            </div>
+            <div class="tpl-left-nav-list">
+                <ul class="tpl-left-nav-menu">
+                </ul>
+            </div>
+        </div>
+        <div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+                详情
+            </div>
+            <ol class="am-breadcrumb">
+                <li><a href="/" class="am-icon-home">首页</a></li>
+                <li><a href="#">详情</a></li>
+                <li class="am-active">详情</li>
+            </ol>
+            <div class="tpl-portlet-components">
+                <div class="tpl-block ">
+                    <div class="am-g tpl-amazeui-form">
+                        <div class="am-u-sm-12 am-u-md-9">
+                            <form class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="user-name" class="am-u-sm-3 am-form-label">项目名称（英文）</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" th:disabled="true" th:value="${info.file_name}" id="pname" placeholder="项目名称（英文）">
+                                        <small>输入项目名称（英文）</small>
+                                    </div>
+                                </div>
+                                <input type="hidden" th:value="${info.id}" id="ridStr"/>
+                                <div class="am-form-group">
+                                    <label for="user-email" class="am-u-sm-3 am-form-label">项目名称（中文）</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" th:value="${info.name}" id="cname" placeholder=项目名称（中文）>
+                                        <small>项目名称（中文）</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-email" class="am-u-sm-3 am-form-label">项目创建时间</label>
+                                    <div class="am-u-sm-9">
+                                        <input th:disabled="true" th:value="${info.ctime}" type="text"  placeholder="项目创建时间">
+                                        <small>项目创建时间</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-email" class="am-u-sm-3 am-form-label">最后更新时间</label>
+                                    <div class="am-u-sm-9">
+                                        <input th:disabled="true" id="update_time_ol" th:value="${info.mtime}" type="text" placeholder="最后更新时间">
+                                        <small>最后更新时间</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-intro" class="am-u-sm-3 am-form-label">项目说明（中文）</label>
+                                    <div class="am-u-sm-9">
+                                        <textarea th:text="${info.intro}" class="" rows="5" id="remark" placeholder="项目说明（中文）"></textarea>
+                                        <small>项目说明（中文）</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                        <label for="user-intro" class="am-u-sm-3 am-form-label">开发人员（列表）</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea th:text="${info.users}" class="" rows="5" id="devId" placeholder="开发人员（列表）"></textarea>
+                                            <small>开发人员（列表）</small>
+                                        </div>
+                                 </div>
+                                 <div class="am-form-group">
+                                        <label for="user-intro" class="am-u-sm-3 am-form-label">人员权限（列表）</label>
+                                        <div class="am-u-sm-9">
+                                            <textarea th:text="${info.auth}" class="" rows="5" id="authId" placeholder="人员权限（列表）"></textarea>
+                                            <small>人员权限（列表）</small>
+                                        </div>
+                                 </div>
+
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                        <button type="button" class="am-btn am-btn-primary" onclick="subInfo()">保存修改</button>
+                                        <button type="button" class="am-btn am-btn-primary" onclick="copySvnUrl(1)">复制内网url</button>
+                                        <button type="button" class="am-btn am-btn-primary" onclick="copySvnUrl(2)">复制外网url</button>
+                                        <span onclick="showTips()" style="color:#0e90d2;cursor:pointer">如何配置？</span>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/amazeui.min.js"></script>
+    <script src="js/app.js"></script>
+	<script src="js/layer/layer.js"></script>
+	<script src="/js/myFun.js"></script>
+    <script>
+        function subInfo(){
+            var cname= $("#cname").val();
+            var remark = $("#remark").val();
+            var devId = $("#devId").val();
+            var authId = $("#authId").val();
+            var idOnly = $("#ridStr").val();
+            if(cname==""||cname==""){
+                layer.msg("svn中文名称不能为空");
+                return;
+            }
+            if(devId==""||devId==""){
+                layer.msg("svn开发人员配置不能为空");
+                return;
+            }
+            if(authId==""||authId==""){
+                layer.msg("svn权限配置不能为空");
+                return;
+            }
+            layer.confirm('请确认配置文件填写正确', {
+                btn: ['确定','取消']
+            },function(){
+                $.post("/doEdit",{name:cname,intro:remark,users:devId,auth:authId,id:idOnly},function(data){
+                layer.msg(data.msg);
+                if(data.code==200){
+                   setTimeout(function(){
+                       location.reload();
+                   },1200);
+                }
+            });
+            },function(){
+                layer.closeAll()
+            });
+        }
+        function log_out(){
+            logOut();
+        }
+        function copySvnUrl(type){
+        	var projectName = $("#pname").val();
+        	if(projectName==""){
+        		layer.msg("参数错误");
+                return;
+        	}
+        	var localUrlJava = "[[${localHost}]]";
+        	var hostUrlJava = "[[${host}]]";
+            if(type==1){
+                svnUrl = localUrlJava+projectName;
+            }else{
+                svnUrl = hostUrlJava+projectName;
+            }
+            copyFun(svnUrl);
+        }
+        function showTips(){
+            layer.open({
+              type: 1,
+              title:"配置说明",
+            //   skin: 'layui-layer-rim', //加上边框
+              area: ['600px', '450px'], //宽高
+              content: '<p>1、开发人员（列表）配置如下:<br><span style="color:red">[users]</span>（必须）<br><span style="color:red">wzr=wzr</span>(名称=密码)</p><p>2、人员权限（列表）配置如下:<br><span style="color:red">[/]</span>(路径)<br><span style="color:red">wzr=rw</span>(名称=读写，r读w写)</p><p>以上红字为有效配置</p>'
+            });
+        }
+    </script>
+</body>
+
+</html>
