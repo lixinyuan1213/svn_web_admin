@@ -1,1 +1,1 @@
-### go code
+### go code(弃用)
