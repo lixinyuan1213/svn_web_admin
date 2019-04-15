@@ -36,7 +36,7 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
+                        <span class="tpl-header-list-user-nick" th:text="${session.user.name}">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
                     </a>
                     <ul class="am-dropdown-content">
                         <!-- <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
@@ -44,14 +44,14 @@
                         <li onclick="log_out()"><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
                     </ul>
                 </li>
-                <li><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+                <li onclick="log_out()"><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
             </ul>
         </div>
     </header>
     <div class="tpl-page-container tpl-page-header-fixed">
-        <div class="tpl-left-nav tpl-left-nav-hover">
+    <div class="tpl-left-nav tpl-left-nav-hover">
             <div class="tpl-left-nav-title">
-                所有菜单
+                用户列表
             </div>
             <div class="tpl-left-nav-list">
                 <ul class="tpl-left-nav-menu">
@@ -64,14 +64,14 @@
                             <i class="am-icon-key"></i>
                             <span>用户管理</span>
                         </a>
+                        <a href="/user/myInfo" class="nav-link">
+                            <i class="am-icon-wpforms"></i>
+                            <span>修改资料</span>
+                        </a>
                     </li>
-                </ul>
+                    </ul>
             </div>
         </div>
-
-
-
-
         <div class="tpl-content-wrapper">
             <div class="tpl-content-page-title">
                 用户信息
@@ -90,7 +90,7 @@
                                 <div class="am-form-group">
                                     <label for="user-name" class="am-u-sm-3 am-form-label">登录名称 <span class="tpl-form-line-small-title">name</span></label>
                                     <div class="am-u-sm-9">
-                                        <input type="text" th:value="${userInfo.name}" class="tpl-form-input" id="user_name_login" placeholder="请输入登录名称">
+                                        <input type="text" th:disabled="true" th:value="${userInfo.name}" class="tpl-form-input" id="user_name_login" placeholder="请输入登录名称">
                                         <small>不能出现特殊字符</small>
                                     </div>
                                 </div>
@@ -139,7 +139,7 @@
                                     <div class="am-u-sm-9">
                                         <select data-am-selected="{searchBox: 1}" id="statusStr">
 										  <option value="1" th:selected="${userInfo.status == 1}">有效</option>
-										  <option value="0" th:selected="${userInfo.status == 0}">无效</option>
+										  <option value="2" th:selected="${userInfo.status == 2}">无效</option>
 										</select>
                                     </div>
                                 </div>
@@ -213,6 +213,7 @@
     <script src="/js/amazeui.min.js"></script>
     <script src="/js/app.js"></script>
     <script src="/js/layer/layer.js"></script>
+    <script src="/js/myFun.js"></script>
     <script>
          function subForm(){
         	 var user_intro = $("#user-intro").val();
@@ -220,7 +221,6 @@
         	 var user_id_only = $("#user_id_only").val();
         	 var user_real_name = $("#user-real_name").val();
         	 var user_passwd = $("#user-passwd").val();
-        	 var user_name = $("#user_name_login").val();
         	 var statusStr = $("#statusStr").val();
         	 var roleStr = $("#roleStr").val();
         	 if(departmentId==""){
@@ -239,14 +239,10 @@
         		 layer.msg("请填写用户真实姓名");
         		 return false;
         	 }
-        	 if(user_name==""){
-        		 layer.msg("登录名称不能为空");
-        		 return false;
-        	 }
         	 $.ajax({    
         		type:'post',        
         		url:'/user/editUser',    
-        		data:{remark:user_intro,status:statusStr,role:roleStr,department:departmentId,id:user_id_only,real_name:user_real_name,password:user_passwd,name:user_name},    
+        		data:{remark:user_intro,status:statusStr,role:roleStr,department:departmentId,id:user_id_only,real_name:user_real_name,password:user_passwd},    
         		cache:false,       
         		success:function(data){
         			layer.msg(data.msg);
@@ -263,7 +259,7 @@
         	 }); 
          }
          function log_out(){
-         	location.href = "/logOut";
+        	 log_out();
          }
     </script>
 </body>

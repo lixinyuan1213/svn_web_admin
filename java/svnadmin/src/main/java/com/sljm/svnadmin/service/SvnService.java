@@ -15,6 +15,7 @@ import com.sljm.svnadmin.model.SvnModel;
 import com.sljm.svnadmin.model.SvnProject;
 import com.sljm.svnadmin.model.UserModel;
 import com.sljm.svnadmin.util.FilesUtil;
+import com.sljm.svnadmin.util.PatternUtil;
 import com.sljm.svnadmin.util.Shell;
 import com.sljm.svnadmin.util.TimeUtil;;
 @Service
@@ -34,6 +35,10 @@ public class SvnService {
 	{
 		//用户提交的项目名称
 		String subSvnNameStr = model.getFile_name();
+		//只允许数字和字母
+		subSvnNameStr = PatternUtil.OnlyCharAndNum(subSvnNameStr);
+		//过滤特殊字符
+		subSvnNameStr = PatternUtil.StringFilter(subSvnNameStr);
 		if(StringUtil.isEmpty(subSvnNameStr))
 		{
 			throw new BusinessException("请填写svn的英文名称");
@@ -74,6 +79,7 @@ public class SvnService {
 		String nowTime = TimeUtil.nowTime();
 		model.setCtime(nowTime);
 		model.setMtime(nowTime);
+		model.setFile_name(subSvnNameStr);
 		int rs = SvnProjectMapper.insertSelective(model);
 		if(rs>0)
 		{
@@ -221,5 +227,30 @@ public class SvnService {
 			return false;
 		}
 		return svnList.contains(dirName);
+	}
+	/**
+	  *   删除svn配置文件中的用户名
+	 * @param userName 用户名
+	 * @return void
+	 */
+	public void removeNameOnConfig(String userName)
+	{
+		//查询所有项目
+		List<SvnProject> list = getList(null);
+		//svn路径
+		String svnPath = svnModel.getSvnPath();
+		if(list!=null) {
+			//删除svn配置文件中的用户名
+			for(int i=0;i<list.size();i++)
+			{
+				SvnProject item = list.get(i);
+				String dbAuth = item.getAuth();
+				//如果配置文件中包含某个用户名，剔除掉
+				if(PatternUtil.svnAuthPattern(dbAuth,userName)) {
+					String authStr = PatternUtil.getNonBlankStr(dbAuth,userName);
+					FilesUtil.writeFile(authStr, svnPath+item.getFile_name()+ "/conf/authz");
+				}
+			}
+		}
 	}
 }

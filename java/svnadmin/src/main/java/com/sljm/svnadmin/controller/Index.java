@@ -1,5 +1,6 @@
 package com.sljm.svnadmin.controller;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import com.sljm.svnadmin.model.ResultMsg;
 import com.sljm.svnadmin.model.SvnModel;
 import com.sljm.svnadmin.model.SvnProject;
 import com.sljm.svnadmin.service.SvnService;
+import com.sljm.svnadmin.service.UserService;
 
 @Controller
 public class Index {
@@ -31,6 +33,8 @@ public class Index {
 	private SvnService SvnService;
 	@Autowired
 	private SvnModel SvnModel;
+	@Autowired
+	private UserService UserService;
 	@Value("${mysvn.delPwd}")
 	private String delPwd;
 	@GetMapping("/")
@@ -56,6 +60,9 @@ public class Index {
 		request.setAttribute("localHost",SvnModel.getLocalHost());
 		//远程的svn链接
 		request.setAttribute("host",SvnModel.getHost());
+		//所有用户
+		HashMap<Long,String> users = UserService.getUserMap();
+		request.setAttribute("users",users);
 		return "index";
 	}
 	@GetMapping("/add")

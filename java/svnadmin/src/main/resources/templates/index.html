@@ -3,7 +3,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>svn 项目列表</title>
-    <meta name="description" content="这是一个 index 页面">
+    <meta name="description" content="svn 项目列表">
     <meta name="keywords" content="index">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
@@ -36,7 +36,7 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
+                        <span class="tpl-header-list-user-nick" th:text="${session.user.name}">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
                     </a>
                     <ul class="am-dropdown-content">
                         <li onclick="log_out()"><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
@@ -61,6 +61,10 @@
                         <a href="/user/list" class="nav-link">
                             <i class="am-icon-key"></i>
                             <span>用户管理</span>
+                        </a>
+                        <a href="/user/myInfo" class="nav-link">
+                            <i class="am-icon-wpforms"></i>
+                            <span>修改资料</span>
                         </a>
                     </li>
                         </ul>
@@ -94,7 +98,7 @@
                         </div>
                         <div class="am-u-sm-12 am-u-md-3">
                             <div class="am-input-group am-input-group-sm">
-                                <input id="keywordStr" th:value="${keywords}" type="text" class="am-form-field">
+                                <input th:placeholder="创建人、项目名称、说明" id="keywordStr" th:value="${keywords}" type="text" class="am-form-field">
                                 <span class="am-input-group-btn">
             <button onclick="searchFun()" class="am-btn  am-btn-default am-btn-success tpl-am-btn-success am-icon-search" type="button"></button>
           </span>
@@ -109,15 +113,20 @@
                                         <tr>
                                             <th class="table-title">项目名称</th>
                                             <th class="table-type">中文名称</th>
+                                            <th class="table-type">创建人</th>
                                             <th class="table-author am-hide-sm-only">项目说明</th>
                                             <th class="table-author am-hide-sm-only">修改时间</th>
                                             <th class="table-set">操作</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                       <tr th:unless="${#lists.size(svnList)}" align="center">
+                                            <td colspan="15">暂无数据</td>
+                                       </tr>
                                        <tr th:each="svn : ${svnList}">
                                             <td><a th:href="'/edit?id='+${svn.id}" th:title="${svn.file_name}" th:text="${#strings.abbreviate(svn.file_name,10)}"></a></td>
                                             <td><a th:href="'/edit?id='+${svn.id}" th:title="${svn.name}" th:text="${#strings.abbreviate(svn.name,10)}"></a></td>
+                                            <td th:text="${users[svn.creator]}" class="am-hide-sm-only"></td>
                                             <td class="am-hide-sm-only" th:title="${svn.intro}" th:text="${#strings.abbreviate(svn.intro,10)}"></td>
                                             <td class="am-hide-sm-only" th:text="${svn.mtime}"></td>
                                             <td>
@@ -133,7 +142,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="am-cf">
+                                <div class="am-cf" th:if="${#lists.size(svnList)}">
                                    <ul class="am-pagination tpl-pagination">
                                             <li class="am-disabled"><a href="#">«</a></li>
                                             <li th:each="pageNumShow:${page.navigatepageNums}" th:class="${pageNumShow} eq ${page.pageNum}?'am-active'"><a th:href="@{'/?pageNum='+${pageNumShow}+'&keyWords='+${keywords}}" th:text="${pageNumShow}" >1</a></li>

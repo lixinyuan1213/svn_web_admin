@@ -1,0 +1,148 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>修改个人资料</title>
+    <meta name="description" content="这是一个 index 页面">
+    <meta name="keywords" content="index">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link rel="icon" type="/image/png" href="/favicon.ico">
+    <link rel="apple-touch-icon-precomposed" href="/i/app-icon72x72@2x.png">
+    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <link rel="stylesheet" href="/css/amazeui.min.css" />
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/app.css">
+</head>
+<body data-type="generalComponents">
+    <header class="am-topbar am-topbar-inverse admin-header">
+        <div class="am-topbar-brand">
+            <a href="/" class="tpl-logo">
+                <img src="/img/logo.png" alt="">
+            </a>
+        </div>
+        <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
+
+        </div>
+
+        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
+
+        <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
+
+            <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
+                <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                    <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
+                        <span class="tpl-header-list-user-nick" th:text="${session.user.name}">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
+                    </a>
+                    <ul class="am-dropdown-content">
+                        <li onclick="log_out()"><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                    </ul>
+                </li>
+                <li onclick="log_out()"><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+            </ul>
+        </div>
+    </header>
+    <div class="tpl-page-container tpl-page-header-fixed">
+        <div class="tpl-left-nav tpl-left-nav-hover">
+            <div class="tpl-left-nav-title">
+                用户列表
+            </div>
+            <div class="tpl-left-nav-list">
+                <ul class="tpl-left-nav-menu">
+                    <li class="tpl-left-nav-item">
+                        <a href="/" class="nav-link">
+                            <i class="am-icon-home"></i>
+                            <span>首页</span>
+                        </a>
+                        <a href="/user/list" class="nav-link">
+                            <i class="am-icon-key"></i>
+                            <span>用户管理</span>
+                        </a>
+                        <a href="/user/myInfo" class="nav-link active">
+                            <i class="am-icon-wpforms"></i>
+                            <span>修改资料</span>
+                        </a>
+                    </li>
+                    </ul>
+            </div>
+        </div>
+        <div class="tpl-content-wrapper">
+            <div class="tpl-content-page-title">
+                修改个人资料
+            </div>
+            <ol class="am-breadcrumb">
+                <li><a href="/" class="am-icon-home">首页</a></li>
+                <li><a href="/user/myInfo">修改个人资料</a></li>
+                <li class="am-active">修改个人资料</li>
+            </ol>
+            <div class="tpl-portlet-components">
+                <div class="tpl-block ">
+                    <div class="am-g tpl-amazeui-form">
+                        <div class="am-u-sm-12 am-u-md-9">
+                            <form class="am-form am-form-horizontal">
+                                <div class="am-form-group">
+                                    <label for="user-name" class="am-u-sm-3 am-form-label">真实姓名</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="text" th:value="${userInfo.real_name}" id="pname" placeholder="真实姓名">
+                                        <small>输入真实姓名</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <label for="user-email" class="am-u-sm-3 am-form-label">登录密码</label>
+                                    <div class="am-u-sm-9">
+                                        <input type="password" id="cname" placeholder="登录密码">
+                                        <small>填写即代表修改密码</small>
+                                    </div>
+                                </div>
+                                <div class="am-form-group">
+                                    <div class="am-u-sm-9 am-u-sm-push-3">
+                                        <button type="button" class="am-btn am-btn-primary" onclick="subInfo()">确认修改</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/amazeui.min.js"></script>
+    <script src="/js/app.js"></script>
+    <script src="/js/host.js"></script>
+	<script src="/js/layer/layer.js"></script>
+	<script src="/js/myFun.js"></script>
+    <script>
+        function subInfo(){
+            var pname = $("#pname").val();
+            var cname= $("#cname").val();
+            if(pname==""){
+                layer.msg("真实姓名不能为空");
+                return;
+            }
+            $.ajax({    
+        		type:'post',        
+        		url:'/user/editMyInfo',    
+        		data:{real_name:pname,password:cname},    
+        		cache:false,       
+        		success:function(data){
+        			layer.msg(data.msg);
+        			if(data.code==200){
+        				setTimeout(function(){
+        					location.reload();
+        				},1200);
+        			} 
+        		},
+        		error:function(){
+        		   layer.msg("系统异常，请重试");
+           		   return false;
+        		} 
+        	 });
+        }
+        function log_out(){
+            logOut();
+        }
+    </script>
+</body>
+</html>

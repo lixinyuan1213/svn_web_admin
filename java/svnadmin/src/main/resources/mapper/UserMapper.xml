@@ -102,12 +102,8 @@
     <include refid="Base_Column_List" />
     from user
     <where> 
-        1 = 1
-        <if test="id != null and id != '' and id != 0">  
-            AND id = #{id, jdbcType=INTEGER}  
-        </if>  
         <if test="real_name != null and real_name !=''">  
-            AND real_name like '%'||#{real_name}||'%'  
+            real_name like '%'||#{real_name}||'%' or  name like '%'||#{real_name}||'%'
         </if> 
     </where>
   </select>
@@ -118,22 +114,22 @@
   <update id="updateByPrimaryKeySelective" parameterType="com.sljm.svnadmin.model.UserModel">
     update user
     <set>
-      <if test="name != null">
+      <if test="name != null and name !=''">
         name = #{name,jdbcType=VARCHAR},
       </if>
-      <if test="remark != null">
+      <if test="remark != null and remark !=''">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
-      <if test="role != null">
+      <if test="role != null and role !=0">
         role = #{role,jdbcType=INTEGER},
       </if>
-      <if test="department != null">
+      <if test="department != null and department !=''">
         department = #{department,jdbcType=INTEGER},
       </if>
-      <if test="status != null">
+      <if test="status != null and status !=0">
         status = #{status,jdbcType=INTEGER},
       </if>
-      <if test="password != null and password!=''">
+      <if test="password != null and password != ''">
         password = #{password,jdbcType=VARCHAR},
       </if>
       <if test="real_name != null">

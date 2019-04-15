@@ -36,22 +36,22 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
+                        <span class="tpl-header-list-user-nick" th:text="${session.user.name}">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
                     </a>
                     <ul class="am-dropdown-content">
                         <!-- <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
                         <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li> -->
-                        <li><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
+                        <li onclick="log_out()"><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
                     </ul>
                 </li>
-                <li><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
+                <li onclick="log_out()"><a href="###" class="tpl-header-list-link"><span class="am-icon-sign-out tpl-header-list-ico-out-size"></span></a></li>
             </ul>
         </div>
     </header>
     <div class="tpl-page-container tpl-page-header-fixed">
-        <div class="tpl-left-nav tpl-left-nav-hover">
+    <div class="tpl-left-nav tpl-left-nav-hover">
             <div class="tpl-left-nav-title">
-                所有菜单
+                用户列表
             </div>
             <div class="tpl-left-nav-list">
                 <ul class="tpl-left-nav-menu">
@@ -64,14 +64,14 @@
                             <i class="am-icon-key"></i>
                             <span>用户管理</span>
                         </a>
+                        <a href="/user/myInfo" class="nav-link">
+                            <i class="am-icon-wpforms"></i>
+                            <span>修改资料</span>
+                        </a>
                     </li>
-                </ul>
+                    </ul>
             </div>
         </div>
-
-
-
-
         <div class="tpl-content-wrapper">
             <div class="tpl-content-page-title">
                 用户信息
@@ -156,6 +156,7 @@
     <script src="/js/amazeui.min.js"></script>
     <script src="/js/app.js"></script>
     <script src="/js/layer/layer.js"></script>
+    <script src="/js/myFun.js"></script>
     <script>
          function subForm(){
         	 var user_intro = $("#user-intro").val();

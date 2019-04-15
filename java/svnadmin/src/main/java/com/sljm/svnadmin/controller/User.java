@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.StringUtil;
 import com.sljm.svnadmin.exception.BusinessException;
 import com.sljm.svnadmin.model.ResultMsg;
 import com.sljm.svnadmin.model.UserModel;
@@ -29,9 +30,9 @@ public class User {
 	public String list(HttpServletRequest request,UserModel u,@RequestParam(value = "pageNum",defaultValue = "1")Integer pageNum,@RequestParam(value = "pageSize",defaultValue = "20")Integer pageSize) 
 	{
 		try {
-			if(!isRole(request)) {
-				return ResultMsg.pageErrorMsg(request, "您没有管理权限");
-			}
+//			if(!isRole(request)) {
+//				return ResultMsg.pageErrorMsg(request, "您没有管理权限");
+//			}
 			PageHelper.startPage(pageNum,pageSize);
 			List<UserModel> list = UserService.getUsers(u);
 			PageInfo<UserModel> pageInfo = new PageInfo<UserModel>(list);
@@ -67,7 +68,7 @@ public class User {
 	public String editUser(HttpServletRequest request,Integer userId)
 	{
 		if(!isRole(request)) {
-			return "login";
+			return ResultMsg.pageErrorMsg(request, "您没有管理权限");
 		}
 		UserModel u = UserService.getUserInfo(userId);
 		if(u==null)
@@ -88,6 +89,10 @@ public class User {
 		if (u == null) {
 			return ResultMsg.error("参数错误");
 		}
+		String loginUserName = u.getName();
+		if(!StringUtil.isEmpty(loginUserName)) {
+			return ResultMsg.error("不能修改登录名");
+		}
 		int flag = UserService.editUser(u);
 		if(flag>0){
 			return ResultMsg.success("操作成功");
@@ -101,7 +106,7 @@ public class User {
 	@RequestMapping(value="/delUser",method = RequestMethod.POST)
 	public ResultMsg delUser(HttpServletRequest request,Integer id) {
 		if(!isRole(request)) {
-			return ResultMsg.success("您没有管理权限");
+			return ResultMsg.error("您没有管理权限");
 		}
 		if(id==null) {
 			return ResultMsg.success("参数错误");
@@ -121,7 +126,7 @@ public class User {
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String add(HttpServletRequest request) {
 		if(!isRole(request)) {
-			return "login";
+			return ResultMsg.pageErrorMsg(request, "您没有管理权限");
 		}
 		return "adduser";
 	}
@@ -155,5 +160,35 @@ public class User {
 			return false;
 		}
 		return true;
+	}
+	@RequestMapping("/myInfo")
+	public String myInfo(HttpServletRequest request) {
+		UserModel loginUser = UserService.getLoginUser(request.getSession());
+		if(loginUser==null)
+		{
+			return ResultMsg.pageErrorMsg(request, "请先登录");
+		}
+		UserModel myInfo =  UserService.getUserInfo((int)loginUser.getId());
+		request.setAttribute("userInfo",myInfo);
+		return "myInfo";
+	}
+	@RequestMapping(value="/editMyInfo",method = RequestMethod.POST)
+	@ResponseBody
+	public ResultMsg editMyInfo(HttpServletRequest request,UserModel u)
+	{
+		try {
+			int rs = UserService.editUserInfo(request, u);
+			if(rs>0)
+			{
+				return ResultMsg.success("操作成功");
+			}else {
+				return ResultMsg.error("操作失败");
+			}
+		} catch (BusinessException be) {
+			return ResultMsg.error(be.getMessage());
+		}catch (Exception e) {
+			e.printStackTrace();
+			return ResultMsg.error("系统异常，请重试");
+		}
 	}
 }

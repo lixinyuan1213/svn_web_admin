@@ -1,12 +1,15 @@
 package com.sljm.svnadmin.service;
 
+import java.util.HashMap;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.StringUtil;
 import com.sljm.svnadmin.exception.BusinessException;
 import com.sljm.svnadmin.mapper.UserMapper;
 import com.sljm.svnadmin.model.UserModel;
@@ -17,6 +20,8 @@ import com.sljm.svnadmin.util.TimeUtil;
 public class UserService {
 	@Autowired
 	private  UserMapper userMapper;
+	@Autowired
+	private SvnService svnService;
 	public UserModel addUser(UserModel model){	
 		/**
 		 * 验证用户名不能重复
@@ -129,10 +134,68 @@ public class UserService {
 	}
 	public int deleteUser(int userId)
 	{
-		return userMapper.deleteByPrimaryKey(userId);
+		UserModel u = getUserInfo(userId);
+		if(u==null)
+		{
+			return 0;
+		}
+		String userName = u.getName();
+		userName = userName.trim();
+		int rs = userMapper.deleteByPrimaryKey(userId);
+		if(rs>0)
+		{
+			//删除配置文件总所有的该用户名
+			svnService.removeNameOnConfig(userName);
+			return rs;
+		}else {
+			return 0;
+		}
 	}
+	/**
+	 * 获取登录人信息
+	 * @param session
+	 * @return
+	 */
 	public UserModel getLoginUser(HttpSession session) {
 		UserModel u = (UserModel) session.getAttribute("user");
 		return u;
+	}
+	/**
+	 * 获取用户信息map（id为键，name为值）
+	 * @return
+	 */
+	public HashMap<Long,String> getUserMap() {
+		HashMap<Long, String> users = new HashMap<Long, String>();
+		List<UserModel> list = getUsers(null);
+		if(list!=null) {
+			for(int i=0;i<list.size();i++) {
+				UserModel temp = list.get(i);
+				Long key = temp.getId();
+				String val = temp.getReal_name();
+				users.put(key, val);
+			}
+		}
+		return users;
+	}
+	public int editUserInfo(HttpServletRequest request,UserModel u) {
+		UserModel loginInfo = getLoginUser(request.getSession());
+		if(loginInfo==null)
+		{
+			throw new BusinessException("请先登录");
+		}
+		if(!StringUtil.isEmpty(u.getName()))
+		{
+			throw new BusinessException("不能修改登录名称");
+		}
+		//修改密码
+		if(!StringUtil.isEmpty(u.getPassword())){
+			u.setPassword(MD5Util.generate(u.getPassword()));
+		}else {
+			u.setPassword(null);
+		}
+		u.setMtime(TimeUtil.nowTime());
+		u.setId(loginInfo.getId());
+		int rs = userMapper.updateByPrimaryKeySelective(u);
+		return rs;
 	}
 }

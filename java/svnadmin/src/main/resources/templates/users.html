@@ -36,11 +36,9 @@
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
                 <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
                     <a class="am-dropdown-toggle tpl-header-list-link" href="javascript:;">
-                        <span class="tpl-header-list-user-nick">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
+                        <span class="tpl-header-list-user-nick" th:text="${session.user.name}">管理员</span><span class="tpl-header-list-user-ico"> <img src="/img/user01.png"></span>
                     </a>
                     <ul class="am-dropdown-content">
-                        <!-- <li><a href="#"><span class="am-icon-bell-o"></span> 资料</a></li>
-                        <li><a href="#"><span class="am-icon-cog"></span> 设置</a></li> -->
                         <li onclick="log_out()"><a href="#"><span class="am-icon-power-off"></span> 退出</a></li>
                     </ul>
                 </li>
@@ -49,8 +47,6 @@
         </div>
     </header>
     <div class="tpl-page-container tpl-page-header-fixed">
-
-
         <div class="tpl-left-nav tpl-left-nav-hover">
             <div class="tpl-left-nav-title">
                 用户列表
@@ -66,9 +62,12 @@
                             <i class="am-icon-key"></i>
                             <span>用户管理</span>
                         </a>
+                        <a href="/user/myInfo" class="nav-link">
+                            <i class="am-icon-wpforms"></i>
+                            <span>修改资料</span>
+                        </a>
                     </li>
-                        </ul>
-                </ul>
+                    </ul>
             </div>
         </div>
         <div class="tpl-content-wrapper">
@@ -87,7 +86,6 @@
                             <div class="am-btn-toolbar">
                                 <div class="am-btn-group am-btn-group-xs">
                                     <button onclick="toAdd()" type="button" class="am-btn am-btn-default am-btn-success"><span class="am-icon-plus"></span> 新增</button>
-                                    <!-- <button onclick="toDel('')" type="button" class="am-btn am-btn-default am-btn-danger"><span class="am-icon-trash-o"></span> 删除</button> -->
                                 </div>
                             </div>
                         </div>
@@ -113,8 +111,9 @@
                                 <table class="am-table am-table-striped am-table-hover table-main">
                                     <thead>
                                         <tr>
-                                            <th class="table-check"><input disabled="true" type="checkbox" class="tpl-table-fz-check"></th>
+                                            <th class="table-check"><input th:disabled="true" type="checkbox" class="tpl-table-fz-check"></th>
                                             <th class="table-title">用户名</th>
+                                            <th class="table-title">svn名</th>
                                             <th class="table-type">身份</th>
                                             <th class="table-author am-hide-sm-only">部门</th>
                                             <th class="table-author am-hide-sm-only">状态</th>
@@ -124,9 +123,13 @@
                                         </tr>
                                     </thead>
                                     <tbody>
+                                       <tr th:unless="${#lists.size(users)}" align="center">
+                                            <td colspan="15">暂无数据</td>
+                                       </tr>
                                        <tr th:each="user : ${users}">
                                             <td><input type="checkbox"></td>
-                                            <td><a href="#" th:text="${user.real_name}">shenlan</a></td>
+                                            <td th:title="${user.real_name}"><a th:href="'/user/edit?userId='+${user.id}" th:text="${#strings.abbreviate(user.real_name,6)}">shenlan</a></td>
+                                            <td th:title="${user.name}"><a th:href="'/user/edit?userId='+${user.id}" th:text="${#strings.abbreviate(user.name,15)}">shenlan</a></td>
                                             <!--身份开始-->
                                             <td th:if="${user.role==1}" class="am-hide-sm-only">管理员</td>
                                             <td th:if="${user.role==2}" class="am-hide-sm-only">普通用户</td>
@@ -134,9 +137,9 @@
                                             <td class="am-hide-sm-only" th:text="${user.department}">java部门</td>
                                             <!--用户状态-->
                                             <td class="am-hide-sm-only" th:if="${user.status==1}">有效</td>
-                                            <td class="am-hide-sm-only" th:if="${user.status==0}">无效</td>
+                                            <td class="am-hide-sm-only" th:if="${user.status==2}">无效</td>
                                             <!--用户状态-->
-                                            <td class="am-hide-sm-only" th:text="${user.remark}"></td>
+                                            <td th:title="${user.remark}" class="am-hide-sm-only" th:text="${#strings.abbreviate(user.remark,10)}"></td>
                                             <td class="am-hide-sm-only" th:text="${user.ctime}"></td>
                                             <td>
                                                 <div class="am-btn-toolbar">
@@ -149,7 +152,7 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                                <div class="am-cf">
+                                <div class="am-cf" th:if="${#lists.size(users)}">
                                    <ul class="am-pagination tpl-pagination">
                                             <li class="am-disabled"><a href="#">«</a></li>
                                             <li th:each="pageNumShow:${page.navigatepageNums}" th:class="${pageNumShow} eq ${page.pageNum}?'am-active'"><a th:href="@{'/user/list?pageNum='+${pageNumShow}+'&'+${condition}}" th:text="${pageNumShow}" >1</a></li>
@@ -157,7 +160,6 @@
                                     </ul>
                                 </div>
                                 <hr>
-
                             </form>
                         </div>
                     </div>
@@ -165,7 +167,6 @@
                 <div class="tpl-alert"></div>
             </div>
         </div>
-        <!-- <div th:text="${pageInfo.pageNum}"></div>ddd --> 
     </div>
     <script src="/js/jquery.min.js"></script>
     <script src="/js/amazeui.min.js"></script>
